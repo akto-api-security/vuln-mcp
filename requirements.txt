@@ -1,0 +1,10 @@
+requests==2.32.3
+python-dotenv
+python-nmap
+ping3
+shodan
+fastapi
+uvicorn
+fastmcp>=2.10.5
+mcp>=1.10.0
+starlette
