@@ -7,7 +7,6 @@ import pickle
 import subprocess
 import sys
 import tempfile
-import requests
 import uvicorn
 from fastmcp import FastMCP
 from mcp.server import Server
