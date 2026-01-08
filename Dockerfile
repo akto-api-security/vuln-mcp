@@ -1,32 +1,33 @@
-# Use the official Astral uv image with Python 3.13 on Alpine
-FROM ghcr.io/astral-sh/uv:python3.13-alpine
+FROM ghcr.io/astral-sh/uv:python3.10-bookworm-slim
 
-# Install Node.js and npm (for npx support)
-RUN apk add --no-cache curl \
-    && curl -fsSL https://unofficial-builds.nodejs.org/download/release/v18.20.2/node-v18.20.2-linux-x64-musl.tar.xz -o node.tar.xz \
-    && mkdir -p /usr/local/lib/nodejs \
-    && tar -xJf node.tar.xz -C /usr/local/lib/nodejs \
-    && ln -s /usr/local/lib/nodejs/node-v18.20.2-linux-x64-musl/bin/node /usr/local/bin/node \
-    && ln -s /usr/local/lib/nodejs/node-v18.20.2-linux-x64-musl/bin/npm /usr/local/bin/npm \
-    && ln -s /usr/local/lib/nodejs/node-v18.20.2-linux-x64-musl/bin/npx /usr/local/bin/npx \
-    && rm node.tar.xz
-
-# Set work directory
+# Set working directory
 WORKDIR /app
 
+# Install system dependencies (nmap and curl)
+RUN apt-get update && apt-get install -y \
+    nmap \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create virtual environment
 RUN uv venv
-RUN source .venv/bin/activate
-# Copy requirements and install Python dependencies with uv
+
+# Copy requirements first for better caching
 COPY requirements.txt .
+
+# Install Python dependencies with uv
 RUN uv pip install -r requirements.txt
 
-# Copy the rest of the app code
+# Copy application code
 COPY . .
 
-# Expose the port your app runs on
-EXPOSE 8081
+# Expose port
+EXPOSE 8000
 
+# Set environment variables
+ENV PORT=8000
+ENV PYTHONUNBUFFERED=1
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Run the FastAPI app with uvicorn
-CMD ["uvicorn", "vul_mcp:app", "--host", "0.0.0.0", "--port", "8081"]
+# Run the application in streamable mode (HTTP)
+CMD ["uv", "run", "vul_mcp.py", "streamable"]
