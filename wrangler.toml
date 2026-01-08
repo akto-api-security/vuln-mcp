@@ -1,0 +1,11 @@
+name = "vuln-mcp-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-08"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables (use wrangler secret for sensitive values)
+[vars]
+# Non-sensitive variables can go here
+
+# For secrets, use: wrangler secret put SHODAN_API_KEY
+# For secrets, use: wrangler secret put VT_API_KEY

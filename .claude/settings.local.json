@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(tee:*)",
+      "Read(//private/tmp/**)",
+      "Read(//tmp/**)",
+      "Bash(python:*)",
+      "Bash(pywrangler deploy:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

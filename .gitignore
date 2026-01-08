@@ -30,3 +30,4 @@ Thumbs.db
 configs/api_keys.env
 *.env
 .python-version
+node_modules/
